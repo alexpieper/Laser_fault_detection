@@ -104,7 +104,7 @@ class DataPreprocessing():
             # Min-Max Normalization:
             # self.scaled_X = (self.X - self.X.min().min()) / (self.X.max().max() - self.X.min().min()) * (1 - 0) + 0
             # Z-Score Normalization:
-            self.scaled_X = (self.X - self.X.mean().mean()) / self.X.mean().mean()
+            self.scaled_X = (self.X - self.X.mean().mean()) / self.X.std().mean()
 
 
         if feature_engineering:
