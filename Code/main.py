@@ -18,7 +18,7 @@ def main():
     ######## Data Preprocessing and Train/Test Splitting ########
     #############################################################
     
-    training_ratio = 0.7
+    training_ratio = 0.8
     X_train_raw, X_test_raw, y_train_raw, y_test_raw = preprocessing.get_train_test_sets(train_ratio=training_ratio,
                                                                                          normalizing=False,
                                                                                          feature_engineering=False)
@@ -300,14 +300,14 @@ def main():
                                         linear_model_norm,
                                         linear_model_feat,
                                         linear_model_norm_feat,
-                                        # decision_tree_model_raw,
-                                        # decision_tree_model_norm,
-                                        # decision_tree_model_feat,
-                                        # decision_tree_model_norm_feat,
-                                        # random_forest_model_raw,
-                                        # random_forest_model_norm,
-                                        # random_forest_model_feat,
-                                        # random_forest_model_norm_feat,
+                                        decision_tree_model_raw,
+                                        decision_tree_model_norm,
+                                        decision_tree_model_feat,
+                                        decision_tree_model_norm_feat,
+                                        random_forest_model_raw,
+                                        random_forest_model_norm,
+                                        random_forest_model_feat,
+                                        random_forest_model_norm_feat,
                                         xgb_model_raw,
                                         xgb_model_norm,
                                         xgb_model_feat,
