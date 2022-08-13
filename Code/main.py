@@ -43,7 +43,7 @@ def main():
     ######## Model Creation #######
     ###############################
 
-    # Data Modelling for Naive model
+    # Naive model
     naive_model = NaiveModel(X_train_raw, y_train_raw, 8, 'Naive Model')
     naive_model.train_model()
 
@@ -53,20 +53,16 @@ def main():
 
 
 
-
-    # Data Modelling for Linear model
+    # Linear model
     linear_model_raw = LinearModel(X_train_raw, y_train_raw, 'Linear Model (raw)')
     linear_model_raw.train_model()
 
-    # Data Modelling for Linear model
     linear_model_norm = LinearModel(X_train_normalized, y_train_normalized, 'Linear Model (normalized)')
     linear_model_norm.train_model()
 
-    # Data Modelling for Linear model
     linear_model_feat = LinearModel(X_train_feat_eng_raw, y_train_feat_eng_raw, 'Linear Model (feature engineered)')
     linear_model_feat.train_model()
 
-    # Data Modelling for Linear model
     linear_model_norm_feat = LinearModel(X_train_feat_eng_normalized, y_train_feat_eng_normalized, 'Linear Model (normalized, feature engineered)')
     linear_model_norm_feat.train_model()
 
@@ -75,23 +71,19 @@ def main():
 
 
 
-    # Data Modelling for Linear model
+    # Explainable model from Microsoft
     explain_ml_raw = ExplainableClassifier(X_train_raw, y_train_raw, 'Explainable Classifier (raw)')
     explain_ml_raw.train_model()
     
-    # Data Modelling for Linear model
     explain_ml_norm = ExplainableClassifier(X_train_normalized, y_train_normalized, 'Explainable Classifier (normalized)')
     explain_ml_norm.train_model()
 
-    # Data Modelling for Linear model
     explain_ml_feat = ExplainableClassifier(X_train_feat_eng_raw, y_train_feat_eng_raw, 'Explainable Classifier (feature engineered)')
     explain_ml_feat.train_model()
 
-    # Data Modelling for Linear model
     explain_ml_norm_feat = ExplainableClassifier(X_train_feat_eng_normalized, y_train_feat_eng_normalized, 'Explainable Classifier (normalized, feature engineered)')
     explain_ml_norm_feat.train_model()
 
-    # explainable_model_raw.explain_model()
 
 
 
@@ -99,19 +91,16 @@ def main():
 
 
 
-    # Data Modelling for Linear model
+    # MLP model
     ann_model_sklearn_raw = NeuralNetSklearn(X_train_raw, y_train_raw, 'ANN Sklearn (raw)')
     ann_model_sklearn_raw.train_model()
 
-    # Data Modelling for Linear model
     ann_model_sklearn_norm = NeuralNetSklearn(X_train_normalized, y_train_normalized, 'ANN Sklearn (normalized)')
     ann_model_sklearn_norm.train_model()
 
-    # Data Modelling for Linear model
     ann_model_sklearn_feat = NeuralNetSklearn(X_train_feat_eng_raw, y_train_feat_eng_raw, 'ANN Sklearn (feature engineered)')
     ann_model_sklearn_feat.train_model()
 
-    # Data Modelling for Linear model
     ann_model_sklearn_norm_feat = NeuralNetSklearn(X_train_feat_eng_normalized, y_train_feat_eng_normalized, 'ANN Sklearn (normalized, feature engineered)')
     ann_model_sklearn_norm_feat.train_model()
 
