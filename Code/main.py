@@ -18,7 +18,7 @@ def main():
     ######## Data Preprocessing and Train/Test Splitting ########
     #############################################################
     
-    training_ratio = 0.7
+    training_ratio = 0.5
     X_train_raw, X_test_raw, y_train_raw, y_test_raw = preprocessing.get_train_test_sets(train_ratio=training_ratio,
                                                                                          normalizing=False,
                                                                                          feature_engineering=False)
