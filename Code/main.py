@@ -1,5 +1,5 @@
 from data_preprocessing import DataPreprocessing
-from data_modelling import NaiveModel, LinearModel, NeuralNet, XGBoost, DecisionTree, RandomForest, NeuralNetSklearn, ExplainableClassifier
+from data_modelling import NaiveModel, LinearModel, Perceptron, XGBoost, DecisionTree, RandomForest, NeuralNetSklearn, ExplainableClassifier
 from result_analysis import ModelAnalysis
 import dashboard
 
@@ -136,14 +136,15 @@ def main():
     ModelAnalysis(X_test_feat_eng_normalized, y_test_feat_eng_normalized, explain_ml_norm_feat).make_whole_report()
 
 
-
-
     ModelAnalysis(X_test_raw, y_test_raw, ann_model_sklearn_raw).make_whole_report()
     ModelAnalysis(X_test_normalized, y_test_normalized, ann_model_sklearn_norm).make_whole_report()
     ModelAnalysis(X_test_feat_eng_raw, y_test_feat_eng_raw, ann_model_sklearn_feat).make_whole_report()
     ModelAnalysis(X_test_feat_eng_normalized, y_test_feat_eng_normalized, ann_model_sklearn_norm_feat).make_whole_report()
 
 
+    # Interpretability report
+    ModelAnalysis(X_test_raw, y_test_raw, linear_model_raw).make_interpretation_report()
+    ModelAnalysis(X_test_raw, y_test_raw, explain_ml_raw).make_interpretation_report()
 
     
 

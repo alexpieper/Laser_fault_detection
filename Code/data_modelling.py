@@ -7,6 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from interpret.glassbox import ExplainableBoostingClassifier
+from interpret import show
 
 '''
 Each of these Classes represent one Model Type
@@ -63,6 +64,98 @@ class NaiveModel():
 
 
 
+class LinearModel():
+    def __init__(self, X_train, y_train, name):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.name = name
+        self.fig_loc = os.path.join('figures', 'logistic_regression')
+        if not os.path.exists(self.fig_loc):
+            os.makedirs(self.fig_loc)
+
+    def train_model(self):
+        self.model = LogisticRegression(random_state=0, max_iter = 500, verbose = 0)
+        self.model.fit(self.X_train, self.y_train.ravel())
+
+
+    def predict(self, X_test):
+        self.predictions = self.model.predict(X_test)
+        return self.predictions
+
+
+    def explain_model(self):
+        fig, ax = plt.subplots(1,1,figsize = (12,6))
+        ax.plot(range(len(self.model.coef_[0])), self.model.coef_[0])
+        ax.set_xlabel('t [in seconds]')
+        ax.set_ylabel('Theta(t)')
+        fig.tight_layout()
+        plt.savefig(os.path.join(self.fig_loc, f'theta_values.png'))
+        plt.close()
+
+
+
+
+
+class NeuralNetSklearn():
+    def __init__(self, X_train, y_train, name):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.name = name
+
+    def train_model(self):
+        self.model = MLPClassifier(hidden_layer_sizes=(24, 12, 6), activation='logistic', solver='adam', max_iter=2500, random_state = 42)
+        self.model.fit(self.X_train, self.y_train.ravel())
+
+    def predict(self, X_test):
+        self.predictions = self.model.predict(X_test)
+        return self.predictions
+
+
+
+
+class ExplainableClassifier():
+    def __init__(self, X_train, y_train, name):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.name = name
+        self.fig_loc = os.path.join('figures', 'interpret_ml')
+        if not os.path.exists(self.fig_loc):
+            os.makedirs(self.fig_loc)
+
+    def train_model(self):
+        self.model = ExplainableBoostingClassifier()
+        self.model.fit(self.X_train, self.y_train.ravel())
+
+    def predict(self, X_test):
+        self.predictions = self.model.predict(X_test)
+        return self.predictions
+
+    def explain_model(self):
+        ebm_global = self.model.explain_global()
+        for index, value in enumerate(self.model.feature_groups_):
+            plotly_fig = ebm_global.visualize(index)
+            plotly_fig.write_image(os.path.join(self.fig_loc, f'explainability_{index}.png'))
+
+
+
+
+
+class XGBoost():
+    def __init__(self, X_train, y_train, name):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.name = name
+
+    def train_model(self):
+        self.model = XGBClassifier(n_estimators=100, max_depth = 3, eval_metric = 'error', random_state = 42)
+        self.model.fit(self.X_train, self.y_train.ravel())
+
+    def predict(self, X_test):
+        self.predictions = self.model.predict(X_test)
+        return self.predictions
+
+
+
 class DecisionTree():
     def __init__(self, X_train, y_train, name):
         self.X_train = X_train
@@ -97,84 +190,7 @@ class RandomForest():
 
 
 
-class LinearModel():
-    def __init__(self, X_train, y_train, name):
-        self.X_train = X_train
-        self.y_train = y_train
-        self.name = name
-
-    def train_model(self):
-        self.model = LogisticRegression(random_state=0, max_iter = 500, verbose = 0)
-        self.model.fit(self.X_train, self.y_train.ravel())
-        # print(self.model.coef_)
-
-
-    def predict(self, X_test):
-        self.predictions = self.model.predict(X_test)
-        return self.predictions
-
-
-
-class NeuralNetSklearn():
-    def __init__(self, X_train, y_train, name):
-        self.X_train = X_train
-        self.y_train = y_train
-        self.name = name
-
-    def train_model(self):
-        self.model = MLPClassifier(hidden_layer_sizes=(24, 12, 6), activation='logistic', solver='adam', max_iter=2500, random_state = 42)
-        self.model.fit(self.X_train, self.y_train.ravel())
-
-    def predict(self, X_test):
-        self.predictions = self.model.predict(X_test)
-        return self.predictions
-
-
-
-class XGBoost():
-    def __init__(self, X_train, y_train, name):
-        self.X_train = X_train
-        self.y_train = y_train
-        self.name = name
-
-    def train_model(self):
-        self.model = XGBClassifier(n_estimators=100, max_depth = 3, eval_metric = 'error', random_state = 42)
-        self.model.fit(self.X_train, self.y_train.ravel())
-
-    def predict(self, X_test):
-        self.predictions = self.model.predict(X_test)
-        return self.predictions
-
-
-
-
-
-class ExplainableClassifier():
-    def __init__(self, X_train, y_train, name):
-        self.X_train = X_train
-        self.y_train = y_train
-        self.name = name
-
-    def train_model(self):
-        self.model = ExplainableBoostingClassifier()
-        self.model.fit(self.X_train, self.y_train.ravel())
-
-    def predict(self, X_test):
-        self.predictions = self.model.predict(X_test)
-        return self.predictions
-
-    def explain_model(self):
-        from interpret import show
-
-        ebm_global = self.model.explain_global()
-        plotly_fig = ebm_global.visualize(0)
-        for index, value in enumerate(self.model.feature_groups_):
-            plotly_fig = ebm_global.visualize(index)
-            plotly_fig.write_image(f"figures/interpretable_{index}.png")
-
-
-
-class NeuralNet():
+class Perceptron():
     def __init__(self, X_train, y_train, learn_rate, epochs, name):
         self.X_train = X_train
         self.y_train = y_train

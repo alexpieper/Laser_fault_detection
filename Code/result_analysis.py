@@ -60,3 +60,7 @@ class ModelAnalysis():
         print(f'The Recall of the model: {self.model_name} is: {np.round(recall * 100,2)}%')
         print(f'The Accuracy of the model: {self.model_name} is: {np.round(accuracy * 100,2)}%')
 
+
+
+    def make_interpretation_report(self):
+        self.model.explain_model()
