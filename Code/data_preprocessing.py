@@ -27,7 +27,7 @@ class DataPreprocessing():
         # look at the first three observations, to get a first understanding
         print(pd.DataFrame(self.X).head(3))
         # here we validate, that there are no missing values:
-        print(pd.DataFrame(self.X).isna().sum().sum())
+        print(f'We have {pd.DataFrame(self.X).isna().sum().sum()} missing values in our dataset.')
         print(f'we have {self.N_obs} observations with {self.N_feat} features for each entry.')
         df = pd.DataFrame(self.X)
         df['std'] = df.std(axis = 1)
