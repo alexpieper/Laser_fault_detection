@@ -122,7 +122,7 @@ class NeuralNetSklearn():
         self.name = name
 
     def train_model(self):
-        self.model = MLPClassifier(hidden_layer_sizes=(24, 12, 6), activation='relu', solver='adam', max_iter=500)
+        self.model = MLPClassifier(hidden_layer_sizes=(24, 12, 6), activation='logistic', solver='adam', max_iter=2500, random_state = 42)
         self.model.fit(self.X_train, self.y_train.ravel())
 
     def predict(self, X_test):
