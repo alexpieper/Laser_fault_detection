@@ -41,7 +41,7 @@ class NaiveModel():
         fig, ax = plt.subplots(1,1, figsize = (8,5))
         ax.hist(max_diffs_faulty, color = 'red', alpha = 0.4, bins = np.linspace(5,35,13))
         ax.hist(max_diffs_correct, color = 'green', alpha = 0.4, bins = np.linspace(5,35,13))
-        ax.set_xlabel(f'Maximum {naive_model.forward_diff} second difference')
+        ax.set_xlabel(f'Maximum {self.forward_diff} second difference')
         ax.set_ylabel('Number of Occurences')
         fig.tight_layout()
         plt.savefig(os.path.join(self.fig_loc, f'hist_naive_rule_{self.forward_diff}.png'))
@@ -49,7 +49,6 @@ class NaiveModel():
 
         # from this histogram, a great discriminant can be chosen
         self.cutoff = (np.mean([np.median(max_diffs_correct), np.median(max_diffs_faulty)]))
-        self.cutoff = 15
 
 
     def predict(self, X_test):
