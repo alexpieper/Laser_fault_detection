@@ -7,6 +7,13 @@ import pandas as pd
 
 
 def make_evaluation_dashboard(X_test, y_test, *models):
+    '''
+
+    :param X_test:
+    :param y_test:
+    :param models: all the models, that should be included in the Evaluation
+    :return: a dashboard, running on localhost with port 8050
+    '''
     ncols = 3
 
     app = dash.Dash()
@@ -18,20 +25,15 @@ def make_evaluation_dashboard(X_test, y_test, *models):
     # initialize the first evaluation DataFrame with all models
     evaluation_df =pd.DataFrame({
             'Model Name': [],
-            'Accuracy': [],
             'Precision': [],
             'Recall': [],
             'F1-Score': [],
-            'F2-Score': [],
         })
     for model in models:
         evaluation_df.loc[model.name, 'Model Name'] = model.name
-        evaluation_df.loc[model.name, 'Accuracy'] = model.accuracy
         evaluation_df.loc[model.name, 'Precision'] = model.precision
         evaluation_df.loc[model.name, 'Recall'] = model.recall
         evaluation_df.loc[model.name, 'F1-Score'] = (2 * model.precision * model.recall) / (model.precision + model.recall)
-        evaluation_df.loc[model.name, 'F2-Score'] = (5 * model.precision * model.recall) / (4 * model.precision + model.recall)
-    evaluation_df['Accuracy'] = evaluation_df['Accuracy'].astype(float)
 
 
 
@@ -39,13 +41,11 @@ def make_evaluation_dashboard(X_test, y_test, *models):
     format = dash.dash_table.Format.Format()
     all_options = [{'label': 'All Models', 'value':
                          {'predictions': y_test.ravel(),
-                          'accuracy': 100,
-                          'recall': 100,
-                          'precision': 100,
+                          'recall': 1,
+                          'precision': 1,
                           'label': 'All Models',
                           }}] + [
                         {'label': i.name, 'value': {'predictions':i.predictions,
-                                                    'accuracy':i.accuracy,
                                                     'recall':i.recall,
                                                     'precision':i.precision,
                                                     'label':i.name,
@@ -59,7 +59,6 @@ def make_evaluation_dashboard(X_test, y_test, *models):
                     options = all_options,
                     placeholder = "Select a model",
                     value = {'predictions':y_test.ravel(),
-                                'accuracy':1,
                                 'recall':1,
                                 'precision':1,
                                 'label':'All Models',
@@ -81,35 +80,26 @@ def make_evaluation_dashboard(X_test, y_test, *models):
         if selected_model['label'] == 'All Models':
             evaluation_df = pd.DataFrame({
                 'Model Name': [],
-                'Accuracy': [],
                 'Precision': [],
                 'Recall': [],
                 'F1-Score': [],
-                'F2-Score': [],
             })
             for model in models:
                 # print(model.name)
                 # print(model.accuracy)
                 evaluation_df.loc[model.name, 'Model Name'] = model.name
-                evaluation_df.loc[model.name, 'Accuracy'] = model.accuracy
                 evaluation_df.loc[model.name, 'Precision'] = model.precision
                 evaluation_df.loc[model.name, 'Recall'] = model.recall
                 evaluation_df.loc[model.name, 'F1-Score'] = (2 * model.precision * model.recall) / (
                             model.precision + model.recall)
-                evaluation_df.loc[model.name, 'F2-Score'] = (5 * model.precision * model.recall) / (
-                            4 * model.precision + model.recall)
         else:
             f1_score = (2 * selected_model['precision'] * selected_model['recall']) / (selected_model['precision'] + selected_model['recall'])
-            f2_score = (5 * selected_model['precision'] * selected_model['recall']) / (4 * selected_model['precision'] + selected_model['recall'])
             evaluation_df = pd.DataFrame({
                 'Model Name': [selected_model['label']],
-                'Accuracy': [selected_model['accuracy']],
                 'Precision': [selected_model['precision']],
                 'Recall': [selected_model['recall']],
                 'F1-Score': [f1_score],
-                'F2-Score': [f2_score],
             })
-        evaluation_df['Accuracy'] = evaluation_df['Accuracy'].astype(float)
         return evaluation_df.to_dict(orient='records')
 
     # Here we update the Graph, when a value from the dropdown is chosen
@@ -118,7 +108,6 @@ def make_evaluation_dashboard(X_test, y_test, *models):
         dash.Input('dropdown', 'value'))
     def update_figure(selected_model):
         if isinstance(selected_model['predictions'][0], list):
-            print('Heerere')
             selected_model['predictions'] = [i[0] for i in selected_model['predictions']]
         df['y_pred'] = selected_model['predictions']
 
