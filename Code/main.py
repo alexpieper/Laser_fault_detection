@@ -1,5 +1,5 @@
 from data_preprocessing import DataPreprocessing
-from data_modelling import NaiveModel, LinearModel, Perceptron, XGBoost, DecisionTree, RandomForest, NeuralNetSklearn, ExplainableClassifier
+from data_modelling import NaiveModel, LinearModel, NeuralNetSklearn, ExplainableClassifier
 from result_analysis import ModelAnalysis
 import dashboard
 
