@@ -133,7 +133,7 @@ def main():
 
     # Interpretability report
     ModelAnalysis(X_test_raw, y_test_raw, linear_model_raw).make_interpretation_report()
-    ModelAnalysis(X_test_raw, y_test_raw, explain_ml_raw).make_interpretation_report()
+    ModelAnalysis(X_test_feat_eng_raw, y_test_feat_eng_raw, explain_ml_feat).make_interpretation_report()
 
     
 

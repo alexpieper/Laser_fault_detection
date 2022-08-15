@@ -14,6 +14,7 @@ def make_evaluation_dashboard(X_test, y_test, *models):
     :param models: all the models, that should be included in the Evaluation
     :return: a dashboard, running on localhost with port 8050
     '''
+    # the number of columns in the Plotly graphic.
     ncols = 3
 
     app = dash.Dash()
@@ -34,7 +35,7 @@ def make_evaluation_dashboard(X_test, y_test, *models):
         evaluation_df.loc[model.name, 'Precision'] = model.precision
         evaluation_df.loc[model.name, 'Recall'] = model.recall
         evaluation_df.loc[model.name, 'F1-Score'] = (2 * model.precision * model.recall) / (model.precision + model.recall)
-
+        # this F1-Score corresponds to the F_{0.5} Measure from the slides. The Harmonic mean of Precision and Recall
 
 
     percentage = dash.dash_table.FormatTemplate.percentage(2)
@@ -85,8 +86,6 @@ def make_evaluation_dashboard(X_test, y_test, *models):
                 'F1-Score': [],
             })
             for model in models:
-                # print(model.name)
-                # print(model.accuracy)
                 evaluation_df.loc[model.name, 'Model Name'] = model.name
                 evaluation_df.loc[model.name, 'Precision'] = model.precision
                 evaluation_df.loc[model.name, 'Recall'] = model.recall
@@ -133,6 +132,7 @@ def make_evaluation_dashboard(X_test, y_test, *models):
                 fig.add_trace(
                     go.Scatter(x=list(range(len(df.iloc[i].drop(['index', 'y_true', 'y_pred'])))),
                                y=df.iloc[i].drop(['index', 'y_true', 'y_pred']), line=dict(color="rgba(255, 98, 81, 0.5)")), row=row_index + 1, col=column_index + 1)
+            # In this and the next case we make the wrong classifications wider, to seperate them from the correct predctions.
             elif (y_test.ravel()[i] == 1) & (selected_model['predictions'][i] == -1):
                 fig.add_trace(
                     go.Scatter(x=list(range(len(df.iloc[i].drop(['index', 'y_true', 'y_pred'])))),
@@ -150,5 +150,6 @@ def make_evaluation_dashboard(X_test, y_test, *models):
             transition_duration=1000)
         return fig
 
+    # this starts the app
     app.run_server(debug=False)
 

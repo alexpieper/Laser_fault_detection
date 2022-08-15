@@ -48,7 +48,9 @@ class NaiveModel():
         plt.close()
 
         # from this histogram, a great discriminant can be chosen
-        self.cutoff = (np.mean([np.median(max_diffs_correct), np.median(max_diffs_faulty)]))
+        # could also be calculated like this, but i set it to 15 here
+        # self.cutoff = (np.mean([np.median(max_diffs_correct), np.median(max_diffs_faulty)]))
+        self.cutoff = 15
 
 
     def predict(self, X_test):
