@@ -75,16 +75,20 @@ class LinearModel():
             os.makedirs(self.fig_loc)
 
     def train_model(self):
-        self.model = LogisticRegression(random_state=0, max_iter = 500, verbose = 0)
+        # If the max_iter parameter = 100 (default), then the normalization has huge impact on the performance
+        # also other parameter have huge impact (like fit_intercept)
+        self.model = LogisticRegression(random_state=0, max_iter = 500)
         self.model.fit(self.X_train, self.y_train.ravel())
 
 
     def predict(self, X_test):
+        # this return (dotproduct of X and \theta^t + intercept) > 0 as integer
         self.predictions = self.model.predict(X_test)
         return self.predictions
 
 
     def explain_model(self):
+        # the self.model.coef_ is \theta
         fig, ax = plt.subplots(1,1,figsize = (12,6))
         ax.plot(range(len(self.model.coef_[0])), self.model.coef_[0])
         ax.set_xlabel('t [in seconds]')
@@ -104,10 +108,13 @@ class NeuralNetSklearn():
         self.name = name
 
     def train_model(self):
+        # that is the Neural network funcitonfrom sklearn.
+        # parameters are quite selvexplaining in my opinion.
         self.model = MLPClassifier(hidden_layer_sizes=(24, 12, 6), activation='logistic', solver='adam', max_iter=2500, random_state = 42)
         self.model.fit(self.X_train, self.y_train.ravel())
 
     def predict(self, X_test):
+        # this is basically one forward propagation through the fully trained neural network.
         self.predictions = self.model.predict(X_test)
         return self.predictions
 
@@ -124,10 +131,14 @@ class ExplainableClassifier():
             os.makedirs(self.fig_loc)
 
     def train_model(self):
+        # This model was developed by Microsoft and is supposed to tackle the blackbox nature of most algorithms.
+        # It is a GAM and uses techniques like bagging, gradient boosting, and automatic interaction detection.
         self.model = ExplainableBoostingClassifier()
         self.model.fit(self.X_train, self.y_train.ravel())
 
     def predict(self, X_test):
+        # this funciton calculates the score of the determined features, and basically adds them (generalized ADDITIVE model)
+        # then it return the class with the highes score (here, binary classification: 1 if score>0)
         self.predictions = self.model.predict(X_test)
         return self.predictions
 
